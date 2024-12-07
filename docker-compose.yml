@@ -19,8 +19,8 @@ services:
     ports:
       - "9080:9080"
     volumes:
-      - ./promtail-config.yaml:/etc/promtail/promtail-config.yaml
-    command: -config.file=/etc/promtail/promtail-config.yaml
+      - ./loki/promtail-config.yaml:/etc/promtail/promtail-config.yaml
+    command: -config.file=/etc/promtail/promtail-config.yaml -config.expand-env=true
     restart: unless-stopped
 
 
@@ -41,7 +41,7 @@ services:
       - "3000:3000"
     restart: unless-stopped
     volumes:
-      - /home/ubuntu/grafana.ini:/etc/grafana/grafana.ini
+      - ./grafana/datasources/datasources.yml:/etc/grafana/grafana.ini
 
 networks:
   monitoring:

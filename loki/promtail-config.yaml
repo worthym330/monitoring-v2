@@ -19,13 +19,14 @@ scrape_configs:
           __path__: /var/log/*log
 
   # Scraping logs from the Java application
-  - job_name: java-app
+- job_name: docker
     static_configs:
       - targets:
           - localhost
         labels:
-          job: java-app
-          __path__: /var/log/java-app.log
+          job: docker
+          container_name: zillout  # Label for identifying logs of this container
+          __path__: /var/lib/docker/containers/zillout/*-json.log
 
   # Scraping logs from Nginx
   - job_name: nginx-logs
@@ -35,3 +36,4 @@ scrape_configs:
         labels:
           job: nginx
           __path__: /var/log/nginx/*.log
+
