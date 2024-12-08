@@ -19,7 +19,7 @@ scrape_configs:
           __path__: /var/log/*log
 
   # Scraping logs from the Java application
-- job_name: docker
+  - job_name: docker
     static_configs:
       - targets:
           - localhost
