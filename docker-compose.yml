@@ -1,4 +1,5 @@
-version: "3.9"  # Remove 'version' if you want to eliminate the warning, or adjust as per your Docker version
+version: "3.9"
+
 services:
   loki:
     image: grafana/loki:latest
@@ -7,11 +8,13 @@ services:
       - "3100:3100"
       - "9095:9095"  # Expose the gRPC port if needed
     volumes:
-      - ./loki/loki-config.yml/:/etc/loki/local-config.yaml
+      - ./loki/loki-config.yaml:/etc/loki/local-config.yml
       - ./loki:/etc/loki  # Mount the Loki configuration
       - ./loki-data:/loki  # Ensure this directory exists for storage
     command: -config.file=/etc/loki/loki-config.yml
     restart: unless-stopped
+    networks:
+      - monitoring
 
   promtail:
     image: grafana/promtail:latest
@@ -22,7 +25,8 @@ services:
       - ./loki/promtail-config.yaml:/etc/promtail/promtail-config.yaml
     command: -config.file=/etc/promtail/promtail-config.yaml -config.expand-env=true
     restart: unless-stopped
-
+    networks:
+      - monitoring
 
   prometheus:
     image: prom/prometheus:v2.44.0
@@ -33,6 +37,8 @@ services:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
     command:
       - --config.file=/etc/prometheus/prometheus.yml
+    networks:
+      - monitoring
 
   grafana:
     image: grafana/grafana:9.5.2
@@ -41,10 +47,17 @@ services:
       - "3000:3000"
     restart: unless-stopped
     volumes:
-      - ./grafana/datasources/datasources.yml:/etc/grafana/grafana.ini
+      - /home/ubuntu/grafana.ini:/etc/grafana/grafana.ini
+    networks:
+      - monitoring
 
 networks:
   monitoring:
+    name: monitoring
+    driver: bridge
 
 volumes:
   grafana-data:
+    driver: local
+  loki-data:
+    driver: local
