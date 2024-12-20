@@ -6,12 +6,12 @@ services:
     container_name: loki
     ports:
       - "3100:3100"
-      - "9095:9095"  # Expose the gRPC port if needed
+      - "9096:9096"  # Expose the gRPC port if needed
     volumes:
-      - ./loki/loki-config.yaml:/etc/loki/local-config.yml
+      - ./loki/loki-config.yaml:/etc/loki/local-config.yaml
       - ./loki:/etc/loki  # Mount the Loki configuration
       - ./loki-data:/loki  # Ensure this directory exists for storage
-    command: -config.file=/etc/loki/loki-config.yml
+    command: -config.file=/etc/loki/loki-config.yaml
     restart: unless-stopped
     networks:
       - monitoring
@@ -23,6 +23,9 @@ services:
       - "9080:9080"
     volumes:
       - ./loki/promtail-config.yaml:/etc/promtail/promtail-config.yaml
+#      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+ #     - /var/log/nginx:/var/log/nginx:ro
+  #    - ./positions:/tmp
     command: -config.file=/etc/promtail/promtail-config.yaml -config.expand-env=true
     restart: unless-stopped
     networks:

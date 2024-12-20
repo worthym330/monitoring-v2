@@ -6,34 +6,31 @@ positions:
   filename: /tmp/positions.yaml
 
 clients:
-  - url: http://loki:3100/loki/api/v1/push
+  - url: http://172.31.28.178:3100/loki/api/v1/push
 
 scrape_configs:
-  # Scraping system logs (existing)
-  - job_name: system
+  - job_name: system_logs
     static_configs:
       - targets:
           - localhost
         labels:
-          job: varlogs
+          job: system_logs
+          host: localhost
           __path__: /var/log/*log
 
-  # Scraping logs from the Java application
-  - job_name: docker
+  - job_name: nginx_logs
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          __path__: /var/log/nginx/*.log
+          job: nginx
+          host: localhost
+
+  - job_name: dockers_logs
     static_configs:
       - targets:
           - localhost
         labels:
           job: docker
-          container_name: zillout  # Label for identifying logs of this container
-          __path__: /var/lib/docker/containers/zillout/*-json.log
-
-  # Scraping logs from Nginx
-  - job_name: nginx-logs
-    static_configs:
-      - targets:
-          - localhost
-        labels:
-          job: nginx
-          __path__: /var/log/nginx/*.log
-
+          __path__: /var/lib/docker/containers/*/*json
