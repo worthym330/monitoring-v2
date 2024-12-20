@@ -23,9 +23,8 @@ services:
       - "9080:9080"
     volumes:
       - ./loki/promtail-config.yaml:/etc/promtail/promtail-config.yaml
-#      - /var/lib/docker/containers:/var/lib/docker/containers:ro
- #     - /var/log/nginx:/var/log/nginx:ro
-  #    - ./positions:/tmp
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/run/docker.sock:/var/run/docker.sock
     command: -config.file=/etc/promtail/promtail-config.yaml -config.expand-env=true
     restart: unless-stopped
     networks:
