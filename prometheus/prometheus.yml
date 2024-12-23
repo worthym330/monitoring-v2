@@ -3,6 +3,6 @@ scrape_configs:
     metrics_path: '/api/v1/rbzo/actuator/prometheus'
     scrape_interval: 3s
     static_configs:
-      - targets: ['192.168.100.1:7009']
+      - targets: ['172.31.25.63:7009']
         labels:
           application: 'My Spring Boot Application'
