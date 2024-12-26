@@ -1,8 +1,25 @@
 scrape_configs:
-  - job_name: 'MyAppMetrics'
+  - job_name: 'MyAppMetrics_HTTP'
     metrics_path: '/api/v1/rbzo/actuator/prometheus'
     scrape_interval: 3s
     static_configs:
-      - targets: ['172.31.25.63:7009']
+      - targets: ['zillout-backend.xyz']  # HTTP target
         labels:
           application: 'My Spring Boot Application'
+    scheme: http
+
+  - job_name: 'MyAppMetrics_HTTPS'
+    metrics_path: '/api/v1/rbzo/actuator/prometheus'
+    scrape_interval: 3s
+    static_configs:
+      - targets: ['zillout-backend.xyz']  # HTTPS target
+        labels:
+          application: 'My Spring Boot Application'
+    scheme: https
+
+  - job_name: 'node_exporter'
+    scrape_interval: 15s
+    static_configs:
+      - targets: ['172.31.20.20:9100']
+        labels:
+          instance: 'Node Exporter Metrics'

@@ -49,7 +49,7 @@ services:
       - "3000:3000"
     restart: unless-stopped
     volumes:
-      - /home/ubuntu/grafana.ini:/etc/grafana/grafana.ini
+      - ./grafana/datasources/datasources.yml:/etc/grafana/grafana.ini
     networks:
       - monitoring
 

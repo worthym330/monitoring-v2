@@ -5,7 +5,7 @@ server:
   grpc_listen_port: 9096
 
 common:
-  instance_addr: 172.31.28.178
+  instance_addr: 172.31.20.20
   path_prefix: /tmp/loki
   storage:
     filesystem:
@@ -34,7 +34,7 @@ schema_config:
         period: 24h
 
 ruler:
-  alertmanager_url: http://172.31.28.178:9093
+  alertmanager_url: http://172.31.20.20:9093
 
 analytics:
   reporting_enabled: false
